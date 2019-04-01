@@ -255,8 +255,7 @@
 }
 
 .box {
-    
-    background-color: rgba(18,18,18,.3);
+    background-color: rgba(18,18,18,.4);
     color: white;
     margin: 0 0 0 0 !important;
     width: 20%;
@@ -266,16 +265,6 @@
 
 table{
     background-color: rgba(0, 0, 0, 0.3) !important;
-    color:white !important;
-}
-
-.original{
-    background-color: rgba(0, 0, 0, 0.3) !important;
-    color:white !important;
-}
-
-.alternate{
-    background-color: rgba(202, 199, 199, 0.3) !important;
     color:white !important;
 }
 
@@ -311,12 +300,14 @@ table{
 }
 
 .box>.columns>.column>input {
-    background-color: #2d2d2d;
+    background-color: #2d2d2d !important;
     color: white;
     border-color: #2d2d2d;
     opacity: 1 !important;
 }
-
+button{
+    background-color: #2d2d2d !important;
+}
 .is-scrollable{
     overflow-y:scroll;
     scrollbar-width: thin;
