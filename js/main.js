@@ -105,12 +105,12 @@ Vue.component('todo', {
             <table class="table is-fullwidth">
                 <thead>
                     <tr>
-                        <th>To-Do List</th>
+                        <th class="text-white">Stay Motivated</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(item,index) in this.todoList" :key="index">
-                        <th>
+                        <th class="text-white">
                             <div class="columns">
                                 <div class="column is-10"> 
                                     {{item}}
@@ -139,7 +139,7 @@ const app = new Vue({
     },
     computed: {
         GenerateImage() {
-            return "hero is-fullheight image" + Math.floor((Math.random() * 16) + 1);
+            return "hero is-fullheight image" + Math.floor((Math.random() * 20) + 1);
         }
     },
     template: `

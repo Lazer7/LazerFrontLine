@@ -213,8 +213,30 @@
     background-size: cover;
     /* Resize the background image to cover the entire container */
 }
-.image15 {
+.image18 {
     background-image: url("../assets/18.jpg");
+    /* The image used */
+    background-color: #cccccc;
+    /* Used if the image is unavailable */
+
+    background-repeat: no-repeat;
+    /* Do not repeat the image */
+    background-size: cover;
+    /* Resize the background image to cover the entire container */
+}
+.image19 {
+    background-image: url("../assets/19.jpg");
+    /* The image used */
+    background-color: #cccccc;
+    /* Used if the image is unavailable */
+
+    background-repeat: no-repeat;
+    /* Do not repeat the image */
+    background-size: cover;
+    /* Resize the background image to cover the entire container */
+}
+.image20 {
+    background-image: url("../assets/20.jpg");
     /* The image used */
     background-color: #cccccc;
     /* Used if the image is unavailable */
@@ -240,6 +262,14 @@
     width: 20%;
     height: 400px;
     border-radius: 0%;
+}
+
+table{
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    color:white !important;
+}
+.text-white{
+    color:white !important;
 }
 
 .box>h1 {
