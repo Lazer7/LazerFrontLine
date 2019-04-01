@@ -78,8 +78,17 @@ Vue.component('todo', {
                 }
                 localStorage.setItem("todo", temp);
             }
+        },
+        alternate(index){
+            if(index%2===0){
+                return "text-white original";
+            }
+            else{
+                return "text-white alternate";
+            }
         }
     },
+
     template: `
         <div class="box is-scrollable">
             <h1 class="title">{{GetDay()}}</h1>
@@ -110,7 +119,7 @@ Vue.component('todo', {
                 </thead>
                 <tbody>
                     <tr v-for="(item,index) in this.todoList" :key="index">
-                        <th class="text-white">
+                        <th :class="alternate(index)">
                             <div class="columns">
                                 <div class="column is-10"> 
                                     {{item}}
