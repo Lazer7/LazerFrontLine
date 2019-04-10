@@ -332,3 +332,12 @@ button{
   ::-webkit-scrollbar-thumb:hover {
     background: #555; 
   }
+  aside { 
+    position:  absolute;
+    left: 0;
+    top: 0; /* set these so Chrome doesn't return 'auto' from getComputedStyle */
+    width: 200px; 
+    background: rgba(45,45,45,0.66); 
+    padding: 8px;
+    color: #FFFFFF;
+}

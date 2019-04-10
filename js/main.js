@@ -2,6 +2,7 @@ Vue.component('todo', {
     data: function () {
         return {
             todoList: [],
+            MessageList: [],
             todoItem: ""
         }
     },
@@ -37,16 +38,24 @@ Vue.component('todo', {
                     var temp = [];
                     var counter = 0;
                     var check = " -ENDOFTASK- ,";
-                    while(this.todoList.indexOf(" -ENDOFTASK- ,")!==-1){
+                    while (this.todoList.indexOf(" -ENDOFTASK- ,") !== -1) {
                         var index = this.todoList.indexOf(" -ENDOFTASK- ,");
-                        var string = this.todoList.substring(0,index);
+                        var string = this.todoList.substring(0, index);
                         temp.push(string);
-                        this.todoList = this.todoList.substring(index+14,this.todoList.length);
+                        this.todoList = this.todoList.substring(index + 14, this.todoList.length);
                     }
                     index = this.todoList.indexOf(" -ENDOFTASK- ");
-                    string = this.todoList.substring(0,index);    
+                    string = this.todoList.substring(0, index);
                     temp.push(string);
                     this.todoList = temp;
+                    for(var i=0; i<this.todoList.length; i++){
+                        var data = localStorage.getItem(i);
+                        if(data!==null){
+                            this.MessageList.push(JSON.parse(data));
+                        }
+                    }
+
+
                 }
             } else {
                 // document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
@@ -55,8 +64,8 @@ Vue.component('todo', {
         WriteData() {
             if (this.todoItem && typeof (Storage) !== "undefined") {
                 var temp = [];
-                for(var i=0; i<this.todoList.length; i++){
-                    temp[i] = this.todoList[i] +  ' -ENDOFTASK- ';
+                for (var i = 0; i < this.todoList.length; i++) {
+                    temp[i] = this.todoList[i] + ' -ENDOFTASK- ';
                 }
                 temp.push(this.todoItem + ' -ENDOFTASK- ');
                 this.todoList.push(this.todoItem);
@@ -64,25 +73,53 @@ Vue.component('todo', {
                 this.todoItem = undefined;
             }
         },
-        ClearData(){
+        ClearData() {
             localStorage.removeItem("todo");
+            for(var i=0; i<this.todoList.length; i++){
+                localStorage.removeItem(i);
+            }
             this.todoItem = [];
-            location.reload(); 
+            location.reload();
+            
         },
-        Remove(index){
-            this.todoList.splice(index,1);
+        Remove(index) {
+            this.todoList.splice(index, 1);
             if (typeof (Storage) !== "undefined") {
                 var temp = [];
-                for(var i=0; i<this.todoList.length; i++){
-                    temp[i] = this.todoList[i] +  ' -ENDOFTASK- ';
+                for (var i = 0; i < this.todoList.length; i++) {
+                    temp[i] = this.todoList[i] + ' -ENDOFTASK- ';
                 }
                 localStorage.setItem("todo", temp);
+                localStorage.removeItem(index);
             }
+        },
+        AddNote(index) {
+            var data = {
+                id: index,
+                x: 0,
+                y: 0
+            };
+            if (!this.MessageList.some(e => e.id === index)) {
+                this.MessageList.push(data);
+                localStorage.setItem(index, JSON.stringify(data));
+            }
+        },
+        RemoveSticky(id) {
+            var index = this.MessageList.findIndex(e => e.id === id);
+            this.MessageList.splice(index, 1);
+            localStorage.removeItem(id);
+        },
+        UpdateSticky(val) {
+            var index = this.MessageList.findIndex(e => e.id === val.id);
+            this.MessageList[index].x = val.x;
+            this.MessageList[index].y = val.y;
+            localStorage.setItem(val.id, JSON.stringify(val));
         }
     },
 
     template: `
         <div class="box is-scrollable">
+        <sticky v-for="data in MessageList" :message="todoList[data.id]" :id="data.id" :x="data.x" :y="data.y" @change="UpdateSticky" @remove="RemoveSticky"></sticky>
             <h1 class="title">{{GetDay()}}</h1>
             <div class="columns">
                 <div class="column is-10">
@@ -113,10 +150,11 @@ Vue.component('todo', {
                     <tr v-for="(item,index) in this.todoList" :key="index">
                         <th class="text-white">
                             <div class="columns">
-                                <div class="column is-10"> 
+                                <div class="column is-9"> 
                                     {{item}}
                                 </div>
                                 <div class="column has-text-right">
+                                    <button class="button is-dark is-small" @click="AddNote(index)"> <i class="fas fa-sticky-note"></i> </button>
                                     <button class="button is-dark is-small" @click="Remove(index)"> x </button>
                                 </div>
                         </th>
@@ -126,6 +164,66 @@ Vue.component('todo', {
             </table>
         
         </div>`
+});
+
+
+
+Vue.component('sticky', {
+    props: ['message', 'id', 'x', 'y'],
+    data: function () {
+        return {
+            isClicked: false
+        }
+    },
+    mounted() {
+        var top = this.y | 0;
+        var left = this.x | 0;
+        var dm = document.getElementById(this.id);
+        dm.addEventListener('dragstart', this.drag_start, false);
+        document.body.addEventListener('dragover', this.drag_over, false);
+        document.body.addEventListener('drop', this.drop, false);
+        dm.style.left = left + "px";
+        dm.style.top = top + "px";
+    },
+    methods: {
+        drag_start(event) {
+            if (this.isClicked) {
+                var style = window.getComputedStyle(event.target, null);
+                event.dataTransfer.setData("text/plain",
+                    (parseInt(style.getPropertyValue("left"), 10) - event.clientX) + ',' + (parseInt(style.getPropertyValue("top"), 10) - event.clientY));
+            }
+        },
+        drag_over(event) {
+            if (this.isClicked) {
+                event.preventDefault();
+                return false;
+            }
+        },
+        drop(event) {
+            if (this.isClicked) {
+                var offset = event.dataTransfer.getData("text/plain").split(',');
+                var dm = document.getElementById(this.id);
+                dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
+                dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
+                event.preventDefault();
+                this.$emit('change', {
+                    id: this.id,
+                    x: event.clientX + parseInt(offset[0], 10),
+                    y: event.clientY + parseInt(offset[1], 10)
+                });
+                return false;
+            }
+        }
+    },
+
+    template: `
+        <aside draggable="true" :id="id" @mouseover="isClicked=true" @mouseleave="isClicked=false">
+            <div class="has-text-right">
+                <button class="button is-dark is-small has-text-right" @click="$emit('remove',id)">x</button>
+            </div>
+            {{message}}
+        </aside>    
+    `
 });
 
 const app = new Vue({
