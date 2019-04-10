@@ -121,6 +121,7 @@ Vue.component('todo', {
             var index = this.MessageList.findIndex(e => e.id === id);
             this.MessageList.splice(index, 1);
             localStorage.removeItem(id);
+            location.reload();
         },
         UpdateSticky(val) {
             var index = this.MessageList.findIndex(e => e.id === val.id);
