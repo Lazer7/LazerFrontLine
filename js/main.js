@@ -161,7 +161,7 @@ Vue.component('todo', {
                     <tr v-for="(item,index) in this.todoList" :key="index">
                         <th class="text-white">
                             <div class="columns">
-                                <div class="column is-9"> 
+                                <div class="column is-8"> 
                                     {{item}}
                                 </div>
                                 <div class="column has-text-right">
