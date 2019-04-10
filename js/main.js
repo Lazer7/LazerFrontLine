@@ -46,7 +46,9 @@ Vue.component('todo', {
                     }
                     index = this.todoList.indexOf(" -ENDOFTASK- ");
                     string = this.todoList.substring(0, index);
-                    temp.push(string);
+                    if (string !== "") {
+                        temp.push(string);
+                    }
                     this.todoList = temp;
                     for (var i = 0; i < this.todoList.length; i++) {
                         var data = localStorage.getItem(i);
@@ -90,7 +92,18 @@ Vue.component('todo', {
                     temp[i] = this.todoList[i] + ' -ENDOFTASK- ';
                 }
                 localStorage.setItem("todo", temp);
-                localStorage.removeItem(index);
+                localStorage.removeItem(parseInt(index));
+                for(var j=index+1; j<this.todoList.length+1; j++){
+                    var storage = this.MessageList.find(e => e.id === j);
+                    console.log("STORAGE ID" + storage.id);
+                    console.log("CURRENT ID"+j);
+                    if(storage!==undefined){
+                        localStorage.removeItem(j);
+                        storage.id=j-1;
+                        localStorage.setItem(j-1,JSON.stringify(storage));
+                    }
+                }
+                location.reload();
             }
         },
         AddNote(index) {
