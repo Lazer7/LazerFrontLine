@@ -48,9 +48,9 @@ Vue.component('todo', {
                     string = this.todoList.substring(0, index);
                     temp.push(string);
                     this.todoList = temp;
-                    for(var i=0; i<this.todoList.length; i++){
+                    for (var i = 0; i < this.todoList.length; i++) {
                         var data = localStorage.getItem(i);
-                        if(data!==null){
+                        if (data !== null) {
                             this.MessageList.push(JSON.parse(data));
                         }
                     }
@@ -75,12 +75,12 @@ Vue.component('todo', {
         },
         ClearData() {
             localStorage.removeItem("todo");
-            for(var i=0; i<this.todoList.length; i++){
+            for (var i = 0; i < this.todoList.length; i++) {
                 localStorage.removeItem(i);
             }
             this.todoItem = [];
             location.reload();
-            
+
         },
         Remove(index) {
             this.todoList.splice(index, 1);
@@ -114,12 +114,23 @@ Vue.component('todo', {
             this.MessageList[index].x = val.x;
             this.MessageList[index].y = val.y;
             localStorage.setItem(val.id, JSON.stringify(val));
+        },
+        TextChanged(val) {
+            console.log(val);
+            this.todoList[val.id] = val.message;
+            console.log(this.todoList)
+            var temp = [];
+            for (var i = 0; i < this.todoList.length; i++) {
+                temp[i] = this.todoList[i] + ' -ENDOFTASK- ';
+            }
+            localStorage.setItem("todo", temp);
+            this.todoItem = undefined;
         }
     },
 
     template: `
         <div class="box is-scrollable">
-        <sticky v-for="data in MessageList" :message="todoList[data.id]" :id="data.id" :x="data.x" :y="data.y" @change="UpdateSticky" @remove="RemoveSticky"></sticky>
+        <sticky v-for="data in MessageList" :message="todoList[data.id]" :id="data.id" :x="data.x" :y="data.y" @change="UpdateSticky" @remove="RemoveSticky" @textchanged="TextChanged"></sticky>
             <h1 class="title">{{GetDay()}}</h1>
             <div class="columns">
                 <div class="column is-10">
@@ -172,7 +183,8 @@ Vue.component('sticky', {
     props: ['message', 'id', 'x', 'y'],
     data: function () {
         return {
-            isClicked: false
+            isClicked: false,
+            editing: false
         }
     },
     mounted() {
@@ -213,15 +225,27 @@ Vue.component('sticky', {
                 });
                 return false;
             }
+        },
+        changeText() {
+            this.$emit('textchanged', {
+                id: this.id,
+                message: this.message
+            });
+            this.editing = false;
         }
     },
 
     template: `
         <aside draggable="true" :id="id" @mouseover="isClicked=true" @mouseleave="isClicked=false">
-            <div class="has-text-right">
-                <button class="button is-dark is-small has-text-right" @click="$emit('remove',id)">x</button>
+            <div v-if="!editing" @click="editing=true">
+                <div class="has-text-right">
+                    <button class="button is-dark is-small has-text-right" @click="$emit('remove',id)">x</button>
+                </div>
+                {{message}}
             </div>
-            {{message}}
+            <div v-if="editing">
+                <textarea class="textarea" v-model="message" @keydown.enter="changeText"></textarea>
+            </div>
         </aside>    
     `
 });
