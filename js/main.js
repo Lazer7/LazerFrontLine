@@ -95,8 +95,6 @@ Vue.component('todo', {
                 localStorage.removeItem(parseInt(index));
                 for(var j=index+1; j<this.todoList.length+1; j++){
                     var storage = this.MessageList.find(e => e.id === j);
-                    console.log("STORAGE ID" + storage.id);
-                    console.log("CURRENT ID"+j);
                     if(storage!==undefined){
                         localStorage.removeItem(j);
                         storage.id=j-1;
@@ -130,9 +128,7 @@ Vue.component('todo', {
             localStorage.setItem(val.id, JSON.stringify(val));
         },
         TextChanged(val) {
-            console.log(val);
             this.todoList[val.id] = val.message;
-            console.log(this.todoList)
             var temp = [];
             for (var i = 0; i < this.todoList.length; i++) {
                 temp[i] = this.todoList[i] + ' -ENDOFTASK- ';
