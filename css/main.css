@@ -246,6 +246,61 @@
     background-size: cover;
     /* Resize the background image to cover the entire container */
 }
+.image21 {
+    background-image: url("../assets/21.jpg");
+    /* The image used */
+    background-color: #cccccc;
+    /* Used if the image is unavailable */
+
+    background-repeat: no-repeat;
+    /* Do not repeat the image */
+    background-size: cover;
+    /* Resize the background image to cover the entire container */
+}
+.image22 {
+    background-image: url("../assets/22.jpg");
+    /* The image used */
+    background-color: #cccccc;
+    /* Used if the image is unavailable */
+
+    background-repeat: no-repeat;
+    /* Do not repeat the image */
+    background-size: cover;
+    /* Resize the background image to cover the entire container */
+}
+.image23 {
+    background-image: url("../assets/23.jpg");
+    /* The image used */
+    background-color: #cccccc;
+    /* Used if the image is unavailable */
+
+    background-repeat: no-repeat;
+    /* Do not repeat the image */
+    background-size: cover;
+    /* Resize the background image to cover the entire container */
+}
+.image24 {
+    background-image: url("../assets/24.jpg");
+    /* The image used */
+    background-color: #cccccc;
+    /* Used if the image is unavailable */
+
+    background-repeat: no-repeat;
+    /* Do not repeat the image */
+    background-size: cover;
+    /* Resize the background image to cover the entire container */
+}
+.image25 {
+    background-image: url("../assets/25.jpg");
+    /* The image used */
+    background-color: #cccccc;
+    /* Used if the image is unavailable */
+
+    background-repeat: no-repeat;
+    /* Do not repeat the image */
+    background-size: cover;
+    /* Resize the background image to cover the entire container */
+}
 .hero-head {
     margin-top: 2%;
 }

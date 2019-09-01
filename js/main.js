@@ -272,7 +272,7 @@ const app = new Vue({
     },
     computed: {
         GenerateImage() {
-            return "hero is-fullheight image" + Math.floor((Math.random() * 20) + 1);
+            return "hero is-fullheight image" + Math.floor((Math.random() * 24) + 1);
         }
     },
     template: `
